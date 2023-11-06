@@ -6,24 +6,11 @@ public class Main {
         //mutante
         //String[] dna = {"ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"};
 
-        //no mutante
-        //String[] dna = {"TTTTTT", "ATGTGC", "TTTTTT", "TGTTGG", "TTGTTA", "TCACTT"};
+        //multiples coincidencias
+        String[] dna = {"TTTTTT", "ATGTGC", "TTTTTT", "TGTTGG", "TTGTTA", "TCACTT"};
 
-        String[] dna = {"TTACGT", "AAGTTC", "TTATTT", "AGTTGT", "GTGCAT", "TCAGTT"};
-        //
-        //String[] dna = {"TTGCGA", "ACGTGC", "TCTTTT", "AGTTGA", "GTATCA", "TCACCG"};
-        //
-        //String[] dna = {"TTGTAA", "ACGTTG", "TTATTT", "AGTAGG", "GTGCGA", "CTCAGG"};
-        //
-        //String[] dna = {"TCTCGA", "AGGTGC", "TTACTT", "AGTGGG", "GTGTCA", "TCACTA"};
-        //
-        //String[] dna = {"TTGCGA", "AAGTGC", "TTATTT", "AGTTGG", "GTGTCA", "TCACTG"};
-        //
-        //String[] dna = {"TTAGTA", "ATGTGC", "TTATTT", "AGTGGG", "GTGTCA", "TCACTG"};
-        //
-        //String[] dna = {"TTGGCA", "ACGTTG", "TTAGTT", "AGTTGG", "GTATCA", "TCACCG"};
-        //
-        //String[] dna = {"TTGAGA", "AAGTGC", "TTATTT", "AGCTGG", "GTGCAC", "TCAGTG"};
+        //coincidencia vertical con 5 letras iguales
+        //String[] dna = {"TAACGT", "TAGTTC", "TAATTT", "TATTGT", "TAGCAT", "TCAGTT"};
 
         //String[] dna = generarSecuencia();
         try {
@@ -69,19 +56,19 @@ public class Main {
                     indicesOcupadosH.add(j + 1);
                     indicesOcupadosH.add(j + 2);
                     indicesOcupadosH.add(j + 3);
-                    System.out.println("Coincidencia en horizontal (" + (i + 1) + ", " + (j + 1) + ")");
+                    System.out.println("\u001B[32mCoincidencia en horizontal (" + (i + 1) + ", " + (j + 1) + ")\u001B[0m");
                 }
             }
         }
 
         //Verificación vertical
-        int columnaOcupada = 0;
+        List<Integer> columnaOcupada = new ArrayList<>();
         for (int i = 0; i < matriz.length - 3; i++) {
             for (int j = 0; j < matriz[0].length; j++) {
-                if (matriz[i][j] == matriz[i + 1][j] && matriz[i][j] == matriz[i + 2][j] && matriz[i][j] == matriz[i + 3][j] && columnaOcupada != j) {
+                if (matriz[i][j] == matriz[i + 1][j] && matriz[i][j] == matriz[i + 2][j] && matriz[i][j] == matriz[i + 3][j] && !columnaOcupada.contains(j)) {
                     count++;
-                    columnaOcupada = j;
-                    System.out.println("Coincidencia en vertical (" + (i + 1) + ", " + (j + 1) + ")");
+                    columnaOcupada.add(j);
+                    System.out.println("\u001B[32mCoincidencia en vertical (" + (i + 1) + ", " + (j + 1) + ")\u001B[0m");
                 }
             }
         }
@@ -96,7 +83,7 @@ public class Main {
                     indicesOcupadosD.add((i + 1) + ", " + (j + 1));
                     indicesOcupadosD.add((i + 2) + ", " + (j + 2));
                     indicesOcupadosD.add((i + 3) + ", " + (j + 3));
-                    System.out.println("Coincidencia en diagonal (" + (i + 1) + ", " + (j + 1) + ")");
+                    System.out.println("\u001B[32mCoincidencia en diagonal (" + (i + 1) + ", " + (j + 1) + ")\u001B[0m");
                 }
             }
         }
@@ -111,7 +98,7 @@ public class Main {
                     indicesOcupadosDI.add((i + 1) + ", " + (j - 1));
                     indicesOcupadosDI.add((i + 2) + ", " + (j - 2));
                     indicesOcupadosDI.add((i + 3) + ", " + (j - 3));
-                    System.out.println("Coincidencia en diagonal inversa (" + (i + 1) + ", " + (j + 1) + ")");
+                    System.out.println("\u001B[32mCoincidencia en diagonal inversa (" + (i + 1) + ", " + (j + 1) + ")\u001B[0m");
                 }
             }
         }
@@ -133,7 +120,7 @@ public class Main {
         //verificar que sea una matriz cuadrada
         for (int i = 0; i < dna.length; i++) {
             if (dna.length != dna[i].length()) {
-                throw new IllegalArgumentException("La matriz no es cuadrada");
+                throw new IllegalArgumentException("\u001B[31mLa matriz no es cuadrada\u001B[0m");
             }
         }
 
@@ -141,7 +128,7 @@ public class Main {
         for (int i = 0; i < dna.length; i++) {
             for (int j = 0; j < dna[0].length(); j++) {
                 if (dna[i].charAt(j) != 'A' && dna[i].charAt(j) != 'T' && dna[i].charAt(j) != 'C' && dna[i].charAt(j) != 'G') {
-                    throw new IllegalArgumentException("La secuencia contiene caracteres no válidos");
+                    throw new IllegalArgumentException("\u001B[31mLa secuencia contiene caracteres no válidos\u001B[0m");
                 }
             }
         }
@@ -153,10 +140,12 @@ public class Main {
         String[] letras = {"A", "T", "C", "G"};
         for (int i = 0; i < dna.length; i++) {
             String secuencia = "";
+
             for (int j = 0; j < dna.length; j++) {
                 secuencia += letras[(int) (Math.random() * 4)];
             }
             dna[i] = secuencia;
+
         }
         return dna;
     }
